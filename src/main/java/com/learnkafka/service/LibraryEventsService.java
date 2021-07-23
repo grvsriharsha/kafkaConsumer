@@ -70,6 +70,8 @@ public class LibraryEventsService {
         log.info("Successfully Persisted the libary Event {} ", libraryEvent);
     }
 
+    //At recovery we send it back to the topic ,so that it can be consumed later.
+
     public void handleRecovery(ConsumerRecord<Integer,String> record){
 
         Integer key = record.key();

@@ -36,6 +36,13 @@ public class LibraryEventsConsumerConfig {
     @Autowired
     KafkaProperties kafkaProperties;
 
+
+//
+//    Basically,this is bean is there by default.But if want to
+//    1.Use concurrency
+//    2.Set Retry and recovery
+//    3.If consumer chooses to manually acknowledge,then we can configure here
+
     @Bean
     @ConditionalOnMissingBean(name = "kafkaListenerContainerFactory")
     ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerContainerFactory(
@@ -51,6 +58,7 @@ public class LibraryEventsConsumerConfig {
             //persist
         }));
         factory.setRetryTemplate(retryTemplate());
+        //In the recovery block ,we generally try to put it back to the topic,if consumer had failed to process it coirrectly.
         factory.setRecoveryCallback((context -> {
             if(context.getLastThrowable().getCause() instanceof RecoverableDataAccessException){
                 //invoke recovery logic
@@ -120,6 +128,8 @@ public class LibraryEventsConsumerConfig {
         return  retryTemplate;
     }
 
+
+    //You can configure for which exception,we want to actually retry
     private RetryPolicy simpleRetryPolicy() {
 
         /*SimpleRetryPolicy simpleRetryPolicy = new SimpleRetryPolicy();

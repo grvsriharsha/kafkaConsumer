@@ -33,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.*;
 
+//We configure the EmbeddedKafka with topics,partitions.
+// We also configure what servers PRODUCER & CONSUMER should connect to..
 @SpringBootTest
 @EmbeddedKafka(topics = {"library-events"}, partitions = 3)
 @TestPropertySource(properties = {"spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}"
@@ -60,6 +62,8 @@ public class LibraryEventsConsumerIntegrationTest {
     @Autowired
     ObjectMapper objectMapper;
 
+    //Basically though we have configured consumer,yet..We make sure that all listeners are connected to the topics and partitions
+
     @BeforeEach
     void setUp() {
 
@@ -72,6 +76,10 @@ public class LibraryEventsConsumerIntegrationTest {
     void tearDown() {
         libraryEventsRepository.deleteAll();
     }
+
+
+    //In integration tests we use the spyBean,to find out out number of integrations.I have written about it in springboot test properties.
+    //Using this we test the number of Invocations,retries.
 
     @Test
     void publishNewLibraryEvent() throws ExecutionException, InterruptedException, JsonProcessingException {

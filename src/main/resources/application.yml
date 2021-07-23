@@ -12,16 +12,29 @@ spring:
   kafka:
     template:
       default-topic: library-events
+#
+#    Configure about the
+#    1.servers,
+#    2.keyvalue desrializers,
+#    3.groupid for the consumer
+#    Earlier for a testcase inkafka consumer project,we did this using java code,alternativekly,we can configure here as well
+
     consumer:
       bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: library-events-listener-group
+
+      # Similarly we configure
+      #    1.servers,
+      #    2.keyvalue desrializers,
+
     producer:
       bootstrap-servers:
         -   localhost:9092,localhost:9093,localhost:9094
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
   datasource:
     url: jdbc:h2:mem:testdb
     driver-class-name: org.h2.Driver
